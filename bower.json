@@ -1,0 +1,24 @@
+{
+  "name": "firstProject",
+  "version": "0.0.0",
+  "authors": [
+    "Nick Brown <nick@nickbrown.me>"
+  ],
+  "moduleType": [
+    "node",
+    "globals"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1"
+  }
+}

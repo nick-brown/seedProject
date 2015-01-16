@@ -1,0 +1,15 @@
+doctype 
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        |    
+        title
+        //- inject:css
+        //- endinject
+        //- inject:js
+        //- endinject
+    body(ng-app="exampleApp")
+        .container
+            .page-header
+                h3 AngularJS App
+            ng-view/
