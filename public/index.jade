@@ -11,18 +11,19 @@ html(lang="en")
     body(ng-app="exampleApp")
         .container(ng-controller="MainCtrl")
             .panel
-                h3.panel-header
-                    |To Do List 
-                    span.label.label-info
-                        |{{(todos | filter: {complete: 'false'}).length}}
-
-            table.table
-                thead
-                    tr
-                        th #
-                        th Action
-                        th Done
-                    tr(ng-repeat="item in todos")
-                        td {{$index + 1}}
-                        td {{item.action}}
-                        td {{item.complete}}
+                form(name="myForm" novalidate ng-submit="addUser(newUser)")
+                    .well
+                        .form-group
+                            label Name: 
+                            input.form-control(name="userName" type="text" required ng-model="newUser.name")
+                        .form-group
+                            label Email: 
+                            input.form-control(name="userEmail" type="email" required ng-model="newUser.email")
+                        .checkbox
+                            label
+                                input(name="agreed" type="checkbox" required ng-model="newUser.agreed")
+                                |I agree to the terms & conditions
+                            input.btn.btn-primary.btn-block(type="submit" ng-disabled="myForm.$invalid")
+                        .well
+                            |Message: {{message}}
+                            div Valid: {{myForm.$valid}}
