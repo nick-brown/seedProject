@@ -1,30 +1,29 @@
 (function() {
-  'use strict';
+    'use strict';
 
-  require('angular');
-  require('angular-route');
+    require('angular');
+    require('angular-route');
+    require('./components/tools/tools');
 
-  // Modules
-  //===========================================================================
-  
-  angular.module('exampleApp', ['ngRoute'])
+    // Modules
+    //===========================================================================
 
-
-  // Routes
-  //===========================================================================
-  
-  .config(function($routeProvider) {
-      $routeProvider.otherwise({
-          templateUrl: './js/views/home.html'
-      });
-  })
+    angular.module('exampleApp', ['ngRoute', 'tools'])
 
 
-  // Controllers
-  //===========================================================================
-  
-  .controller('mainController', [
-      '$scope',
-      require('./controllers/mainController')
-  ]);
+    // Routes
+    //===========================================================================
+
+    .config(['$routeProvider', function($routeProvider) {
+        $routeProvider.otherwise({
+            templateUrl: './js/views/home.html'
+        });
+    }])
+    // Controllers
+    //===========================================================================
+
+    .controller('MainCtrl', [
+        '$scope',
+        require('./controllers/mainController')
+    ]);
 }());
