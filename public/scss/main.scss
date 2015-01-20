@@ -2,3 +2,7 @@ body {
     width:auto;
 }
 
+form .ng-invalid.ng-dirty { background-color: lightpink; }
+form .ng-valid.ng-dirty { background-color: lightgreen; }
+span.summary.ng-invalid { color: red; font-weight: bold; }
+span.summary.ng-valid { color: green; }
