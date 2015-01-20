@@ -10,6 +10,19 @@ html(lang="en")
         //- endinject
     body(ng-app="exampleApp")
         .container(ng-controller="MainCtrl")
-            .page-header
-                h3 AngularJS App
-            ng-view/
+            .panel
+                h3.panel-header
+                    |To Do List 
+                    span.label.label-info
+                        |{{(todos | filter: {complete: 'false'}).length}}
+
+            table.table
+                thead
+                    tr
+                        th #
+                        th Action
+                        th Done
+                    tr(ng-repeat="item in todos")
+                        td {{$index + 1}}
+                        td {{item.action}}
+                        td {{item.complete}}
