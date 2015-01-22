@@ -1,6 +1,6 @@
 {
-  "name": "secondProject",
-  "version": "0.0.0",
+  "name": "seedProject",
+  "version": "0.0.1",
   "description": "",
   "main": "server.js",
   "dependencies": {

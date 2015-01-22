@@ -3,12 +3,11 @@
 
     require('angular');
     require('angular-route');
-    require('./components/tools/tools');
 
     // Modules
     //===========================================================================
 
-    angular.module('exampleApp', ['ngRoute', 'tools'])
+    angular.module('exampleApp', ['ngRoute'])
 
 
     // Routes

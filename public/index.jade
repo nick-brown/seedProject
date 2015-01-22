@@ -10,23 +10,8 @@ html(lang="en")
         //- endinject
     body(ng-app="exampleApp")
         .container(ng-controller="MainCtrl")
-            .panel
-                form(name="myForm" novalidate ng-submit="addUser(newUser)")
-                    .well
-                        .form-group
-                            label Name: 
-                            input.form-control(name="userName" type="text" required ng-model="newUser.name"
-                            ng-class="myForm.$valid ? 'ng-valid' : 'ng-invalid'")
-                        .form-group
-                            label Email: 
-                            input.form-control(name="userEmail" type="email" required ng-model="newUser.email"
-                            ng-class="myForm.$valid ? 'ng-valid' : 'ng-invalid'")
-                        .checkbox
-                            label
-                                input(name="agreed" type="checkbox" required ng-model="newUser.agreed")
-                                |I agree to the terms & conditions
-                            input.btn.btn-primary.btn-block(type="submit" ng-disabled="myForm.$invalid")
-                        .well
-                            |Message: {{message}}
-                            div Valid:
-                                span.summary(ng-class="myForm.$valid ? 'ng-valid' : 'ng-invalid'") {{myForm.$valid}}
+            .well
+                h3 
+                    |{{message}}
+
+            ng-view
