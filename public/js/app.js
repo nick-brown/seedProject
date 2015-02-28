@@ -2,21 +2,24 @@
     'use strict';
 
     require('angular');
-    require('angular-route');
+    require('angular-ui-router');
 
     // Modules
     //===========================================================================
 
-    angular.module('exampleApp', ['ngRoute'])
+    angular.module('exampleApp', ['ui.router'])
 
 
     // Routes
     //===========================================================================
 
-    .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.otherwise({
+    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+        $stateProvider.state('home', {
+            url: '/home',
             templateUrl: './js/views/home.html'
         });
+
+        $urlRouterProvider.otherwise('home');
     }])
     // Controllers
     //===========================================================================
