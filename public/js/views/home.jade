@@ -1,2 +1,3 @@
 div
-    |Content from home.jade
+    div(ng-repeat="prod in products")
+        |{{prod.name}} - {{prod.price}}
