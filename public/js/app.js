@@ -26,6 +26,14 @@
                 url: '/authors',
                 templateUrl: './js/views/authors.html',
                 controller: 'AuthorCtrl'
+            })
+            
+            .state('authors2', {
+                url: '/authors2',
+                templateUrl: './js/views/authors.html',
+                controller: function($scope, author) {
+                    $scope.author = author.data;
+                }
             });
 
         $urlRouterProvider.otherwise('home');
@@ -45,4 +53,5 @@
         'author',
         require('./controllers/authorController')
     ]);
+    
 }());

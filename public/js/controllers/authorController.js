@@ -1,13 +1,9 @@
-module.exports = function($scope, authorService, author) {
+module.exports = function($scope, authorService) {
     'use strict';
 
-    $scope.author = author;
-
-    authorService.getNext();
-    authorService.getNext();
-    authorService.getNext();
-        //.then(function(data) {
-        //    console.log(data);
-        //});
+    authorService.getNext()
+        .then(function(data) { 
+            $scope.author = data; 
+        });
 
 };
