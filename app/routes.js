@@ -14,6 +14,41 @@ module.exports = function(router, app, models) {
     // prefix all routes with /api
     app.use('/api', router);
 
+    var Author = function(name, books) {
+        this.name = name;
+        this.books = books || [];
+    };
+
+    var Book = function(title, year) {
+        this.title = title;
+        this.year = year || 'unknown';
+    };
+
+    var listOfBooks = function(lists) {
+        var arr = [];
+        lists.forEach(function(itm) {
+            arr.push(new Book(itm[0], itm[1]));
+        });
+
+        return arr;
+    };
+
+    var authors = [
+        new Author('Scott', listOfBooks([['My Life', 2014], ['Communications and You', 2013]])),
+        new Author('Dave', listOfBooks([['Speaking Japanese', 2012], ['Airplanes and Stuff', 2012]])),
+        new Author('Nick', listOfBooks([['Programming Stuff', 2011], ['Video Games to Play', 2010]])),
+        new Author('Hemingway', listOfBooks([['Some Poetry Stuff', 1950], ['Existential Stuff', 1940]])),
+        new Author('Ayn Rand', listOfBooks([['Atlas Shrugged', 1949], ['The Fountainhead', 1930]]))
+    ];
+
+
+    router.route('/authors')
+        .get(function(req, res) {
+            var randomAuthor = authors[Math.floor(Math.random() * authors.length)];
+
+            res.json(randomAuthor);
+        });
+
     router.route('/products')
 
         // create a product (accessed at POST http://localhost:8080/api/products)
