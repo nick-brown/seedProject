@@ -52,6 +52,10 @@
         'authorService',
         'author',
         require('./controllers/authorController')
-    ]);
+    ])
+
+    .factory('_', function() {
+        return require('lodash');
+    });
     
 }());

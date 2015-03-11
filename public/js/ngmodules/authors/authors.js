@@ -14,5 +14,5 @@ module.exports = angular.module('authors', [])
     })
     
     .service('author', function() {
-        'use strict'; 
+
     });
