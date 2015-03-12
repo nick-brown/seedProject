@@ -3,14 +3,24 @@ module.exports = (function() {
     return angular.module('authors', [])
         .service('authorService', function($q, $http, author) {
 
-            this.getNext = function() {
-                return $http.get('/api/authors')
+            var authorService = this;
+            authorService.getNext = function() {
+                 var prom = $http.get('/api/authors')
                     .then(function(res) {
-                        author.data = res.data;
-                        //console.log(res.data);
+                        console.log(res.data);
+                        angular.copy(res.data, author.data);
 
                         return res.data;
                     });
+
+                
+                if(authorService.lastPromise) {
+                    angular.copy(prom, authorService.lastPromise);
+                } else {
+                    authorService.lastPromise = prom;
+                }
+
+                return prom;
             };
         })
         
@@ -21,16 +31,28 @@ module.exports = (function() {
         .directive('top', function() {
             return {
                 restrict: 'E',
-                template: '<div>{{author.name}}</div>'
+                scope: {},
+                template: '<div>{{auth.name}}</div>',
+                controller: function($scope, author) {
+                    $scope.auth = author.data;
+
+                    //authorService.lastPromise.then(function(data) {
+                    //    $scope.auth = data;
+                    //});
+                }
             };
         })
         
-        .directive('bottom', function() {
+        .directive('bottom', function($timeout) {
             return {
                 restrict: 'E',
-                template: '<div ng-repeat="book in books">{{book.title}}</div>',
+                scope: {},
+                template: '<div ng-repeat="book in auth.books">{{book.title}}</div>',
                 controller: function($scope, author) {
-                    $scope.books = author.data.books;
+                    $scope.auth = author.data;
+                    $timeout(function() {
+                        author.data.name = "Bob!";
+                    }, 500);
                 }
             };
         });
