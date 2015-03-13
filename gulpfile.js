@@ -90,7 +90,8 @@ var cssStream = function() {
    return gulp.src( PATHS.src.css )
         .pipe( gulpif(/[.]scss$/, sass()) )
         .pipe( csslint() )
-        .pipe( csslint.reporter() )
+        // TODO: make the reporter report on sass
+        //.pipe( csslint.reporter() )
         .pipe( gulpif( PROD, mincss() ) )
         .pipe( streamify( rev() ) )
         .pipe( gulp.dest( PATHS.dest.css ) );
@@ -134,7 +135,7 @@ var imageStream = function() {
 
 // TASKS
 //==============================================================================
-gulp.task('default', ['compile', 'imagemin', 'watch', 'connect']);
+gulp.task('default', ['compile', 'imagemin', 'watch', 'serve']);
 
 gulp.task('watch', function() {
     'use strict';
@@ -161,7 +162,7 @@ gulp.task('clean', function() {
     return del( DIST );
 });
 
-gulp.task('connect', function() {
+gulp.task('serve', function() {
     'use strict';
     var server = require('./server')
     server.listen( server.get('port'), function() {

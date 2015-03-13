@@ -1,5 +1,5 @@
 module.exports = angular.module('products', [])
-    .factory('products', function($http, $q) {
+    .factory('products', ['$http', '$q', function($http, $q) {
         //var products = $http.get('/api/products')
         //    .then(function(res) {
         //        return res.data;
@@ -31,4 +31,4 @@ module.exports = angular.module('products', [])
           data: products,
           fetch: getProducts
         };
-    });
+    }]);
