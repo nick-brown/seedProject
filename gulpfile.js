@@ -9,7 +9,6 @@ var gulp       = require('gulp')
 ,   series     = require('stream-series')
 ,   argv       = require('yargs').argv
 ,   del        = require('del')
-,   server     = require('./server')
 ,   pngquant   = require('imagemin-pngquant')
 ,   sass       = require('gulp-sass')
 ,   uglify     = require('gulp-uglify')
@@ -41,10 +40,16 @@ var PROD           = !!(!!argv.production || !!argv.prod)
 var PATHS = {
     src: {
         js    : PUBLIC + '/js/**/*.js',
-        scss  : PUBLIC + '/scss/*.scss',
         imgs  : PUBLIC + '/images/*',
-        jade  : PUBLIC + '/**/*.jade',
-        html  : PUBLIC + '/**/*.html',
+        fonts : BOWER_HOME + '/bootstrap-sass/assets/fonts/**/*.*',
+        html  : [
+            PUBLIC + '/**/*.html',
+            PUBLIC + '/**/*.jade',
+        ],
+        css   : [
+            PUBLIC + '/**/*.scss',
+            PUBLIC + '/**/*.css',
+        ],
         bower : [
             BOWER_HOME + '/**/*.css',
             BOWER_HOME + '/**/*.css.map',
@@ -55,8 +60,9 @@ var PATHS = {
     dest: {
         js     : DIST + '/js',
         css    : DIST + '/css' ,
-        vendor : DIST + '/vendor',
+        //vendor : DIST + '/vendor',
         imgs   : DIST + '/images',
+        fonts  : DIST + '/fonts',
         fonts  : DIST + '/fonts'
     }
 };
@@ -81,8 +87,8 @@ var jsStream = function() {
 
 var cssStream = function() {
    'use strict';
-   return gulp.src( PATHS.src.scss )
-        .pipe( sass() )
+   return gulp.src( PATHS.src.css )
+        .pipe( gulpif(/[.]scss$/, sass()) )
         .pipe( csslint() )
         .pipe( csslint.reporter() )
         .pipe( gulpif( PROD, mincss() ) )
@@ -90,21 +96,29 @@ var cssStream = function() {
         .pipe( gulp.dest( PATHS.dest.css ) );
 };
 
-var vendorStream = function() {
+var fontStream = function() {
     'use strict';
-    // Collect css map files for vendor assets
-    gulp.src( BOWER_HOME + '/**/*.css.map' )
-        .pipe( rename( {dirname: ''} ) )
-        .pipe( gulp.dest( PATHS.dest.vendor ) );
 
-    gulp.src( BOWER_HOME + '/bootstrap/fonts/**/*.*')
+    return gulp.src( PATHS.src.fonts )
         .pipe( gulp.dest( PATHS.dest.fonts ) );
-
-    return gulp.src( PATHS.src.bower )
-        .pipe( concat( 'vendor.css' ) )
-        .pipe( gulpif( PROD, mincss() ) )
-        .pipe( gulp.dest( PATHS.dest.vendor ) );
 };
+
+// TODO: decide whether assets need to be deployed to a vendor directory separately
+//var vendorStream = function() {
+//    'use strict';
+//    // Collect css map files for vendor assets
+//    gulp.src( BOWER_HOME + '/**/*.css.map' )
+//        .pipe( rename( {dirname: ''} ) )
+//        .pipe( gulp.dest( PATHS.dest.vendor ) );
+//
+//    gulp.src( BOWER_HOME + '/bootstrap/fonts/**/*.*')
+//        .pipe( gulp.dest( PATHS.dest.fonts ) );
+//
+//    return gulp.src( PATHS.src.bower )
+//        .pipe( concat( 'vendor.css' ) )
+//        .pipe( gulpif( PROD, mincss() ) )
+//        .pipe( gulp.dest( PATHS.dest.vendor ) );
+//};
 
 var imageStream = function() {
     'use strict';
@@ -124,10 +138,15 @@ gulp.task('default', ['compile', 'imagemin', 'watch', 'connect']);
 
 gulp.task('watch', function() {
     'use strict';
-    // TODO: Allow PATHS.src.html watching without circular triggers
+    // TODO: Prevent PATHS.src.html watching from triggering a circular trigger
+    livereload.listen();
     gulp.watch([PATHS.src.imgs], ['imagemin']);
-    gulp.watch([PATHS.src.scss, PATHS.src.js, PATHS.src.jade], ['compile']);
-    // TODO: Use nodemon to reload server on server.js changes
+    gulp.watch([
+        PATHS.src.css,
+        PATHS.src.js,
+        PATHS.src.html],
+        ['compile']
+    );
 });
 
 gulp.task('lint:js', function() {
@@ -144,6 +163,7 @@ gulp.task('clean', function() {
 
 gulp.task('connect', function() {
     'use strict';
+    var server = require('./server')
     server.listen( server.get('port'), function() {
         var msg = 'Node server started.  Listening on port ' + server.get('port') + '...';
         gutil.log( gutil.colors.cyan(msg) );
@@ -155,21 +175,16 @@ gulp.task('imagemin', imageStream);
 gulp.task('compile', ['lint:js', 'clean'], function() {
     'use strict';
 
-    var injector = inject( series( vendorStream(), jsStream(), cssStream() ), {
-        ignorePath: '/dist' 
+    var injector = inject( series( fontStream(), jsStream(), cssStream() ), {
+        ignorePath: '/dist',
     });
     
     // minify images
     imageStream();
 
-    return gulp.src( PATHS.src.jade )
+    return gulp.src( PATHS.src.html )
         .pipe( injector )
-        .pipe( jade({ pretty: true }) )
+        .pipe( gulpif(/[.]jade$/, jade({ pretty: true })) )
         .pipe( gulp.dest( DIST ) )
         .pipe( livereload() );
-
-    // TODO: fix injector to work on html and jade simultaneously
-    //return gulp.src( PATHS.src.html )
-    //    .pipe( injector )
-    //    .pipe( gulp.dest( PATHS.dest.html ) );
 });
