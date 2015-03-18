@@ -3,29 +3,26 @@
 // MODULES
 //==============================================================================
 
-var gulp       = require('gulp')
-,   browserify = require('browserify')
-,   transform  = require('vinyl-transform')
-,   series     = require('stream-series')
-,   argv       = require('yargs').argv
+var browserify = require('browserify')
 ,   del        = require('del')
-,   pngquant   = require('imagemin-pngquant')
-,   sass       = require('gulp-sass')
-,   uglify     = require('gulp-uglify')
-,   streamify  = require('gulp-streamify')
-,   jshint     = require('gulp-jshint')
+,   gulp       = require('gulp')
 ,   csslint    = require('gulp-csslint')
-,   livereload = require('gulp-livereload')
-,   jade       = require('gulp-jade')
-,   rev        = require('gulp-rev')
-,   mincss     = require('gulp-minify-css')
-,   imagemin   = require('gulp-imagemin')
 ,   gulpif     = require('gulp-if')
+,   imagemin   = require('gulp-imagemin')
 ,   inject     = require('gulp-inject')
-,   concat     = require('gulp-concat')
-,   rename     = require('gulp-rename')
+,   jade       = require('gulp-jade')
+,   jshint     = require('gulp-jshint')
+,   livereload = require('gulp-livereload')
+,   mincss     = require('gulp-minify-css')
+,   rev        = require('gulp-rev')
+,   sass       = require('gulp-sass')
+,   streamify  = require('gulp-streamify')
+,   uglify     = require('gulp-uglify')
 ,   gutil      = require('gulp-util')
-,   ignore     = require('gulp-ignore');
+,   pngquant   = require('imagemin-pngquant')
+,   series     = require('stream-series')
+,   transform  = require('vinyl-transform')
+,   argv       = require('yargs').argv;
 
 
 // CONSTANTS
@@ -157,14 +154,9 @@ gulp.task('lint:js', function() {
         .pipe( jshint.reporter('jshint-stylish') );
 });
 
-gulp.task('clean', function() {
-    'use strict';
-    return del( DIST );
-});
-
 gulp.task('serve', function() {
     'use strict';
-    var server = require('./server')
+    var server = require('./server');
     server.listen( server.get('port'), function() {
         var msg = 'Node server started.  Listening on port ' + server.get('port') + '...';
         gutil.log( gutil.colors.cyan(msg) );
@@ -173,19 +165,22 @@ gulp.task('serve', function() {
 
 gulp.task('imagemin', imageStream);
 
-gulp.task('compile', ['lint:js', 'clean'], function() {
+gulp.task('compile', ['lint:js'], function() {
     'use strict';
 
-    var injector = inject( series( fontStream(), jsStream(), cssStream() ), {
-        ignorePath: '/dist',
-    });
-    
-    // minify images
-    imageStream();
+    del( DIST, function() {
 
-    return gulp.src( PATHS.src.html )
-        .pipe( injector )
-        .pipe( gulpif(/[.]jade$/, jade({ pretty: true })) )
-        .pipe( gulp.dest( DIST ) )
-        .pipe( livereload() );
+        var injector = inject( series( fontStream(), jsStream(), cssStream() ), {
+            ignorePath: '/dist',
+        });
+        
+        // minify images
+        imageStream();
+
+        return gulp.src( PATHS.src.html )
+            .pipe( injector )
+            .pipe( gulpif(/[.]jade$/, jade({ pretty: true })) )
+            .pipe( gulp.dest( DIST ) )
+            .pipe( livereload() );
+    });
 });
