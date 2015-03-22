@@ -1,6 +1,8 @@
 module.exports = function($scope, products) {
     'use strict';
 
+    $scope.message = 'Hello';
+
     //$scope.products = products.fetch();
     //window.prods = $scope.products;
     //$scope.$watch('products', function(nu, old) {
