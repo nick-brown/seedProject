@@ -12,6 +12,10 @@ module.exports = function($scope, products) {
     //    console.log('old', old);
     //});
 
+    $scope.increment = function(num) {
+        return ++num;
+    };
+
     products.fetch().then(function(res) {
         console.log(res.data);
         $scope.products = res.data;
