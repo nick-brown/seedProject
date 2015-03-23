@@ -1,5 +1,6 @@
-'use strict';
+/*globals inject, expect*/
 describe('MainCtrl', function() {
+    'use strict';
     var ctrl, scope, counter, backend;
 
     beforeEach(module('exampleApp'));
@@ -36,7 +37,7 @@ describe('MainCtrl', function() {
         });
 
         it('Processes the data', function () {
-            expect(scope.items).to.exist;
+            expect(scope.items).to.exist();
             expect(scope.items).to.have.length(2);
         });
 
