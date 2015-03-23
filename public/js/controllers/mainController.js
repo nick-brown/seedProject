@@ -1,4 +1,4 @@
-module.exports = function($scope, products) {
+module.exports = function($scope, products, items) {
     'use strict';
 
     $scope.message = 'Hello';
@@ -15,6 +15,10 @@ module.exports = function($scope, products) {
     $scope.increment = function(num) {
         return ++num;
     };
+
+    items.fetchItems().then(function(data) {
+        $scope.items = data;
+    });
 
     products.fetch().then(function(res) {
         console.log(res.data);

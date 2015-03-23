@@ -86,4 +86,11 @@ module.exports = function(router, app, models) {
             });
         });
 
+    router.route('/items')
+
+        // create a product (accessed at POST http://localhost:8080/api/products)
+        .get(function(req, res) {
+            return res.json([{name: 'one'}, {name: 'two'}]);
+        });
+
 };
