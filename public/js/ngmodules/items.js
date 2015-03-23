@@ -6,6 +6,6 @@ module.exports = angular.module('items', [])
                     .then(function(res) {
                         return res.data;
                     });
-            });
+            }
         };
     }]);

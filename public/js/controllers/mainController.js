@@ -20,8 +20,8 @@ module.exports = function($scope, products, items) {
         $scope.items = data;
     });
 
-    products.fetch().then(function(res) {
-        console.log(res.data);
-        $scope.products = res.data;
-    });
+    //products.fetch().then(function(res) {
+    //    console.log(res.data);
+    //    $scope.products = res.data;
+    //});
 };
