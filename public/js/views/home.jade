@@ -1,3 +1,6 @@
 div
     div(ng-repeat="prod in products")
         |{{prod.name}} - {{prod.price}}
+
+    label(for="username")
+    input(name="username" ng-model="user.name")
