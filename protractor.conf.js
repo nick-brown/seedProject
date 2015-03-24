@@ -1,5 +1,4 @@
-/*globals exports*/
-exports.config = {
+module.exports.config = {
     specs: ['test/e2e/**/*.spec.js'],
     framework: 'mocha',
     mochaOpts: {

@@ -1,9 +1,5 @@
-/*globals browser, by, element*/
-var chai = require('chai')
-,   promised = require('chai-as-promised')
-,   expect = chai.expect;
-
-chai.use(promised);
+/*globals browser, by, element, expect*/
+require('./config.js');
 
 describe('exampleApp', function() {
     'use strict';
