@@ -7,12 +7,9 @@ describe('MainCtrl', function() {
 
     beforeEach(inject(function($httpBackend) {
         backend = $httpBackend;
-        backend.expect('GET', '/api/items').respond(
-            // data encoded as json automatically
-            [
-                {name: 'three'},
-                {name: 'four'}
-            ]);
+        backend.expect('GET', '/api/items').respond(function(method, url, data) {
+            return [200, [{name: 'three'}, {name: 'four'}]];
+        });
     }));
 
     beforeEach(inject(function($controller, $rootScope, $http) {
@@ -43,5 +40,40 @@ describe('MainCtrl', function() {
     it('Preserves the order of the data', function() {
         expect(scope.items[0].name).to.equal('three');
         expect(scope.items[1].name).to.equal('four');
+    });
+});
+
+describe('Items Service', function() {
+    var backend, $httpPostSpy;
+
+    beforeEach(module('exampleApp'));
+
+    beforeEach(inject(function($httpBackend, items, $http) {
+        backend = $httpBackend;
+        backend.expect('POST', '/api/items').respond(function(method, url, data) {
+            return [200, ['okay!']];
+        });
+
+        $httpPostSpy = sinon.spy($http, 'post');
+    }));
+
+    it('posts items to an endpoint', inject(function(items) {
+        var callback = sinon.spy();
+
+        callback.call(this);
+
+        expect(callback).to.have.been.called;
+    }));
+
+    it('should spy on postItems', inject(function(items) {
+        var obj = {thing: 'stuff'};
+        items.postItems(obj);
+
+        expect($httpPostSpy.args[0][1]).to.deep.equal(obj);
+        expect($httpPostSpy).to.have.been.called;
+    }));
+
+    afterEach(function() {
+        $httpPostSpy.restore();        
     });
 });

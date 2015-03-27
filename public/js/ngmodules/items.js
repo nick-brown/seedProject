@@ -7,6 +7,13 @@ module.exports = angular.module('items', [])
                     .then(function(res) {
                         return res.data;
                     });
+            },
+
+            postItems: function(item) {
+                return $http.post('/api/items', item)
+                    .then(function(res) {
+                        return res;
+                    });
             }
         };
     }]);
