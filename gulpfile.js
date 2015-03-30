@@ -21,6 +21,7 @@ var browserify = require('browserify')
 ,   gutil      = require('gulp-util')
 ,   pngquant   = require('imagemin-pngquant')
 ,   series     = require('stream-series')
+,   source     = require('vinyl-source-stream')
 ,   transform  = require('vinyl-transform')
 ,   argv       = require('yargs').argv;
 
@@ -68,18 +69,20 @@ var PATHS = {
 // STREAMS
 //==============================================================================
 
+var bundler = browserify()
+    .add(POINT_OF_ENTRY)
+    .on('log', gutil.log);
+
 var jsStream = function() {
     'use strict';
-    var browserified = transform(function(filename) {
-        // TODO: bundle only on production compile
-        return browserify(filename).bundle();
-    });
-
-    return gulp.src(POINT_OF_ENTRY)
-        .pipe( browserified )
-        .pipe( gulpif ( PROD, streamify( uglify() ) ) )
+    
+    // TODO: add sourcemaps
+    return bundler.bundle()
+        .on('error', gutil.log.bind(gutil, 'Browserify Error: Bundle not built'))
+        .pipe( source( 'app.js' ) )
+        .pipe( gulpif( PROD, streamify( uglify() ) ) )
         .pipe( streamify( rev() ) )
-        .pipe( gulp.dest( PATHS.dest.js ));
+        .pipe( gulp.dest( PATHS.dest.js ) );
 };
 
 var cssStream = function() {
@@ -169,7 +172,6 @@ gulp.task('compile', ['lint:js'], function() {
     'use strict';
 
     del( DIST, function() {
-
         var injector = inject( series( fontStream(), jsStream(), cssStream() ), {
             ignorePath: '/dist',
         });
