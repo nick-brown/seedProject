@@ -5,11 +5,17 @@
     require('angular-ui-router');
     require('./ngmodules/products');
     require('./ngmodules/items');
+    require('./controllers/controllers');
+
 
     // Modules
     //===========================================================================
 
-    angular.module('exampleApp', ['ui.router', 'products', 'items'])
+    angular.module('exampleApp', [
+        'controllers',
+        'ui.router',
+        'products'
+    ])
 
 
     // Routes
@@ -23,13 +29,4 @@
 
         $urlRouterProvider.otherwise('home');
     }])
-    // Controllers
-    //===========================================================================
-
-    .controller('MainCtrl', [
-        '$scope',
-        'products',
-        'items',
-        require('./controllers/mainController')
-    ]);
 }());
