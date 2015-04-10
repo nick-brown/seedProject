@@ -30,7 +30,7 @@ var browserify = require('browserify')
 //==============================================================================
 
 var PROD           = !!(!!argv.production || !!argv.prod)
-,   PUBLIC         = __dirname + '/public'
+,   PUBLIC         = __dirname + '/client'
 ,   DIST           = __dirname + '/dist'
 ,   BOWER_HOME     = PUBLIC + '/bower_components'
 ,   POINT_OF_ENTRY = PUBLIC + '/js/app.js';

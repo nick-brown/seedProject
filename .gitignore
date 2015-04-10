@@ -3,6 +3,4 @@
 node_modules/
 *.swp
 *.swo
-app/static/css/
-public/dist/
 dist/
