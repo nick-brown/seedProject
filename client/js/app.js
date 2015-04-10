@@ -27,5 +27,5 @@
         });
 
         $urlRouterProvider.otherwise('home');
-    }])
+    }]);
 }());
