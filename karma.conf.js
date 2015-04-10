@@ -18,7 +18,7 @@ module.exports = function(config) {
     files: [
       'dist/js/**/*.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'test/bdd/**/*.spec.js'
+      'test/unit/**/*.spec.js'
     ],
 
 
