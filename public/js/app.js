@@ -3,7 +3,6 @@
 
     require('angular');
     require('angular-ui-router');
-    require('./ngmodules/products');
     require('./ngmodules/items');
     require('./controllers/controllers');
 
@@ -14,7 +13,7 @@
     angular.module('exampleApp', [
         'controllers',
         'ui.router',
-        'products'
+        'items'
     ])
 
 
