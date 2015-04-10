@@ -37,18 +37,18 @@ var PROD           = !!(!!argv.production || !!argv.prod)
 
 var PATHS = {
     src: {
-        js    : PUBLIC + '/js/**/*.js',
-        imgs  : PUBLIC + '/images/*',
-        fonts : BOWER_HOME + '/bootstrap-sass/assets/fonts/**/*.*',
-        html  : [
+        js: PUBLIC + '/js/**/*.js',
+        imgs: PUBLIC + '/images/*',
+        fonts: BOWER_HOME + '/bootstrap-sass/assets/fonts/**/*.*',
+        html: [
             PUBLIC + '/**/*.html',
             PUBLIC + '/**/*.jade',
         ],
-        css   : [
-            PUBLIC + '/**/*.scss',
-            PUBLIC + '/**/*.css',
+        css: [
+            PUBLIC + '/scss/*.scss',
+            BOWER_HOME + '/angular-motion/dist/angular-motion.css'
         ],
-        bower : [
+        bower: [
             BOWER_HOME + '/**/*.css',
             BOWER_HOME + '/**/*.css.map',
             '!' + BOWER_HOME + '/**/*.min.css'
