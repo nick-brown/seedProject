@@ -1,3 +1,4 @@
+// This is an example model that is currently unused by the client-side app
 var mongoose   = require('mongoose')
 ,   Schema     = mongoose.Schema;
 

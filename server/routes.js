@@ -14,6 +14,15 @@ module.exports = function(router, app, models) {
     // prefix all routes with /api
     app.use('/api', router);
 
+    router.route('/items')
+
+        .get(function(req, res) {
+            return res.json([
+                { name: 'one' },
+                { name: 'two' }
+            ]);
+        });
+
     router.route('/products')
 
         // create a product (accessed at POST http://localhost:8080/api/products)
@@ -46,6 +55,7 @@ module.exports = function(router, app, models) {
 
 
     router.route('/products/:product_id')
+
         .get(function(req, res) {
             models.Product.findById(req.params.product_id, function(err, product) {
                 if(err)
@@ -85,12 +95,4 @@ module.exports = function(router, app, models) {
                 res.json({ message: "Deleted product with id: " + req.params.product_id });
             });
         });
-
-    router.route('/items')
-
-        // create a product (accessed at POST http://localhost:8080/api/products)
-        .get(function(req, res) {
-            return res.json([{name: 'one'}, {name: 'two'}]);
-        });
-
 };
